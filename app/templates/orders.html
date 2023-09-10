@@ -1,5 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Order Up!</h1>
+<div>
+    <h2>ASSIGN TABLE</h2>
+    <form action="{{ url_for('.index') }}" method="post">
+        {{ assign_tablecsrf_token }}
+        <div>{{ assign_table.tables.label }} {{ assign_table.tables }}</div>
+        <div>{{ assign_table.servers.label }} {{ assign_table.servers }}</div>
+        <div>{{ assign_table.assign }}</div>
+    </form>
+</div>
+
+<div>
+    <h2>YOUR OPEN ORDERS</h2>
+    <ul>
+        {% for order in your_orders %}
+            <li>
+                Table {{ order.table_id }}
+                <form action="/orders/{{ order.id }}/close" method="post">
+                    {{ close_table.csrf_token }}
+                    <div>{{ close_table.table }} {{ close_table.submit }}</div>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    Add Items
+    form
+</div>
+
 {% endblock content %}

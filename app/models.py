@@ -36,8 +36,7 @@ class Menu(db.Model):
     name = db.Column(db.String(30), nullable=False)
 
     items = db.relationship('MenuItem',
-                            back_populates="menu",
-                            cascade="all, delete-orphan")
+                            back_populates="menu")
 
 
 class MenuItem(db.Model):
@@ -53,6 +52,8 @@ class MenuItem(db.Model):
                            back_populates="items")
     menu = db.relationship("Menu",
                            back_populates="items")
+    order_details = db.relationship("OrderDetail",
+                            back_populates="items")
 
 
 class MenuItemType(db.Model):
@@ -62,8 +63,7 @@ class MenuItemType(db.Model):
     name = db.Column(db.String(20), nullable=False)
 
     items = db.relationship("MenuItem",
-                            back_populates="type",
-                            cascade="all, delete-orphan")
+                            back_populates="type")
 
 
 class Table(db.Model):
@@ -86,11 +86,11 @@ class Order(db.Model):
     finished = db.Column(db.Boolean, nullable=False)
 
     employee = db.relationship("Employee",
-                        back_populates="order")
+                        back_populates="orders")
     table = db.relationship("Table",
-                        back_populates="order")
-    details = db.relationship("OrderDetail",
-                        back_populates="order")
+                        back_populates="orders")
+    order_details = db.relationship("OrderDetail",
+                        back_populates="orders")
 
 
 class OrderDetail(db.Model):
@@ -100,7 +100,7 @@ class OrderDetail(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
     menu_item_id = db.Column(db.Integer, db.ForeignKey("menu_items.id"), nullable=False)
 
-    order = db.relationship("Order",
-                            back_populates="order-details")
+    orders = db.relationship("Order",
+                            back_populates="order_details")
     items = db.relationship("MenuItem",
-                            back_populates="order-details")
+                            back_populates="order_details")
